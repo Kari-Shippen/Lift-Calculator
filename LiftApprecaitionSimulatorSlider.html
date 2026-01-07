@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Avenir Next','Avenir','Helvetica Neue',sans-serif;padding:10px;background:#f8f8f8}
+.calc{background:#fff;border-radius:5px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,0.12);max-width:380px;margin:0 auto;border:1px solid #e0e0e0}
+h1{font-size:16px;margin-bottom:14px;color:#323232;font-weight:600;letter-spacing:0.3px}
+.group{margin-bottom:12px}
+label{display:block;font-size:11px;font-weight:500;color:#6e6e6e;margin-bottom:4px;letter-spacing:0.5px}
+input[type="number"]{width:100%;padding:7px 9px;border:1px solid #d1d1d1;border-radius:5px;font-size:13px;background:#fafafa;transition:border-color 0.2s}
+input[type="number"]:focus{outline:none;border-color:#0079c1;background:#fff}
+.slider-box{background:#f4f4f4;padding:10px;border-radius:5px;margin-bottom:12px;border:1px solid #e8e8e8}
+.slider-label{font-size:11px;font-weight:500;color:#6e6e6e;margin-bottom:6px;letter-spacing:0.5px}
+.slider-val{font-size:18px;font-weight:600;color:#0079c1;margin-bottom:6px}
+input[type="range"]{width:100%;height:4px;border-radius:5px;background:#d1d1d1;outline:none;-webkit-appearance:none}
+input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#0079c1;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.2)}
+input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#0079c1;cursor:pointer;border:none;box-shadow:0 1px 3px rgba(0,0,0,0.2)}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.card{background:#fafafa;padding:10px;border-radius:5px;text-align:center;border:1px solid #e8e8e8}
+.card.market{border-left:3px solid #0079c1}
+.card.lift{border-left:3px solid #d97706}
+.card-title{font-size:10px;color:#6e6e6e;margin-bottom:5px;font-weight:500;letter-spacing:0.5px}
+.card-amount{font-size:16px;font-weight:600;margin-bottom:3px}
+.card.market .card-amount{color:#0079c1}
+.card.lift .card-amount{color:#d97706}
+.card-detail{font-size:10px;color:#6e6e6e}
+.foregone{background:#fef3f3;border:1px solid #fca5a5;border-left:3px solid #dc2626;border-radius:5px;padding:10px;text-align:center}
+.foregone-label{font-size:10px;color:#991b1b;font-weight:500;margin-bottom:4px;letter-spacing:0.5px}
+.foregone-amount{font-size:20px;font-weight:600;color:#dc2626;margin-bottom:2px}
+.foregone-pct{font-size:11px;color:#991b1b;font-weight:500}
+</style>
+</head>
+<body>
+<div class="calc">
+<h1>LIFT Impact Simulator</h1>
+<div class="group">
+<label>Purchase Price ($) </label>
+<input type="number" id="pp" value="200000" min="0" step="1000">
+</div>
+<div class="group">
+<label>Sale Price ($) </label>
+<input type="number" id="sp" value="250000" min="0" step="10">
+</div>
+<div class="slider-box">
+<div class="slider-label">Appreciation Cap</div>
+<div class="slider-val" id="cv">25%</div>
+<input type="range" id="cs" min="1" max="100" value="25" step="1">
+</div>
+<div class="compare">
+<div class="card market">
+<div class="card-title">Market Equity Accrued </div>
+<div class="card-amount" id="ma">$250,000</div>
+<div class="card-detail"> Equity Gained: <span id="mk">$50,000</span></div>
+</div>
+<div class="card lift">
+<div class="card-title">LIFT Equity Accrued </div>
+<div class="card-amount" id="la">$212,500</div>
+<div class="card-detail"> Equity Gained: <span id="lk">$12,500</span></div>
+</div>
+</div>
+<div class="foregone">
+<div class="foregone-label">Foregone Equity</div>
+<div class="foregone-amount" id="fa">$37,500</div>
+<div class="foregone-pct" id="fp">75.0% Lost </div>
+</div>
+</div>
+<script>
+const pp=document.getElementById('pp'),sp=document.getElementById('sp'),cs=document.getElementById('cs'),cv=document.getElementById('cv'),ma=document.getElementById('ma'),mk=document.getElementById('mk'),la=document.getElementById('la'),lk=document.getElementById('lk'),fa=document.getElementById('fa'),fp=document.getElementById('fp');
+function fmt(v){return'$'+v.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0})}
+function calc(){const p=parseFloat(pp.value)||0,s=parseFloat(sp.value)||0,c=parseFloat(cs.value)/100;cv.textContent=Math.round(c*100)+'%';const t=s-p,l=t*c,ls=p+l,f=t-l,fp_val=t>0?(f/t*100):0;ma.textContent=fmt(s);mk.textContent=fmt(t);la.textContent=fmt(ls);lk.textContent=fmt(l);fa.textContent=fmt(f);fp.textContent=fp_val.toFixed(1)+'% of Appreciation Lost'}
+pp.addEventListener('input',calc);sp.addEventListener('input',calc);cs.addEventListener('input',calc);calc();
+</script>
+</body>
+</html>
