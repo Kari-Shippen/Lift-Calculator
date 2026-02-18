@@ -35,7 +35,7 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 </head>
 <body>
 <div class="calc">
-<h1>LIFT Impact Calculator</h1>
+<h3>LIFT Impact Calculator</h1>
 <div class="group">
 <label>Purchase Price ($) </label>
 <input type="number" id="pp" value="200000" min="0" step="1000">
